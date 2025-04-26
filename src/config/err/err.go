@@ -5,7 +5,7 @@ import "net/http"
 type Err struct {
 	Message string   `json:"message"`
 	Err     string   `json:"err"`
-	Code    int64    `json:"code"`
+	Code    int      `json:"code"`
 	Causes  []Causes `json:"causes"`
 }
 
@@ -18,7 +18,7 @@ func (e *Err) Error() string {
 	return e.Message
 }
 
-func NewErr(message string, err string, code int64, causes []Causes) *Err {
+func NewErr(message string, err string, code int, causes []Causes) *Err {
 	return &Err{
 		Message: message,
 		Err:     err,

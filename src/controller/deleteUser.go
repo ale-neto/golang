@@ -1,5 +1,7 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
-func deleteUser(c *gin.Context) {}
+func DeleteUser(c *gin.Context) {}
