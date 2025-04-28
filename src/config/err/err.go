@@ -1,4 +1,4 @@
-package err
+package err_rest
 
 import "net/http"
 
@@ -27,12 +27,11 @@ func NewErr(message string, err string, code int, causes []Causes) *Err {
 	}
 }
 
-func NewBadRequestErr(message string, causes []Causes) *Err {
+func NewBadRequestErr(message string) *Err {
 	return &Err{
 		Message: message,
 		Err:     "bad request",
 		Code:    http.StatusBadRequest,
-		Causes:  causes,
 	}
 }
 
