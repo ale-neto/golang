@@ -28,7 +28,7 @@ func init() {
 
 func ValidateUserError(validation_error error) *err_rest.Err {
 	var jsonErr *json.UnmarshalTypeError
-	var jsonValidationError *validator.ValidationErrors
+	var jsonValidationError validator.ValidationErrors
 
 	if errors.As(validation_error, &jsonErr) {
 		return err_rest.NewBadRequestErr("Invalid field type")
@@ -39,6 +39,7 @@ func ValidateUserError(validation_error error) *err_rest.Err {
 				Field:   fieldErr.Field(),
 				Message: fieldErr.Translate(transl),
 			}
+
 			errorsCauses = append(errorsCauses, cause)
 		}
 		return err_rest.NewBadRequestValidationErr("Validation error", errorsCauses)
