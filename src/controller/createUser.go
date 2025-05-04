@@ -6,9 +6,13 @@ import (
 	"github.com/ale-neto/golang/src/config/logger"
 	"github.com/ale-neto/golang/src/config/validation"
 	"github.com/ale-neto/golang/src/controller/model/request"
-	"github.com/ale-neto/golang/src/controller/model/response"
+	"github.com/ale-neto/golang/src/model"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+)
+
+var (
+	UserDomainInterface model.UserDomainInterface
 )
 
 func CreateUser(c *gin.Context) {
@@ -24,15 +28,15 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	response := response.UserResponse{
-		Name:  userRequest.Name,
-		Email: userRequest.Email,
-		Age:   userRequest.Age,
-	}
+	domain := model.NewUserDomain(userRequest.Name, userRequest.Password, userRequest.Email, userRequest.Age)
 
+	if err := domain.CreateUser(); err != nil {
+		c.JSON(err.Code, err)
+
+	}
 	logger.Info("User created successfully",
 		zap.String("name", userRequest.Name))
 
-	c.JSON(http.StatusOK, response)
+	c.String(http.StatusOK, "User created successfully")
 
 }
