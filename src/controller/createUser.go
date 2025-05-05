@@ -7,6 +7,7 @@ import (
 	"github.com/ale-neto/golang/src/config/validation"
 	"github.com/ale-neto/golang/src/controller/model/request"
 	"github.com/ale-neto/golang/src/model"
+	"github.com/ale-neto/golang/src/model/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -30,10 +31,12 @@ func CreateUser(c *gin.Context) {
 
 	domain := model.NewUserDomain(userRequest.Name, userRequest.Password, userRequest.Email, userRequest.Age)
 
-	if err := domain.CreateUser(); err != nil {
-		c.JSON(err.Code, err)
+	service := service.NewUserDomainService()
 
+	if err := service.CreateUser(domain); err != nil {
+		c.JSON(err.Code, err)
 	}
+
 	logger.Info("User created successfully",
 		zap.String("name", userRequest.Name))
 
