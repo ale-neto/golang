@@ -3,22 +3,34 @@ package model
 import (
 	"crypto/md5"
 	"encoding/hex"
-
-	err_rest "github.com/ale-neto/golang/src/config/err"
 )
 
-type userDomain struct {
-	Password string
-	Email    string
-	Name     string
-	Age      int8
+type UserDomainInterface interface {
+	GetAge() int8
+	GetEmail() string
+	GetName() string
+	GetPassword() string
+	EncryptPassword()
 }
 
-type UserDomainInterface interface {
-	CreateUser(userDomain) *err_rest.Err
-	UpdateUser(string) *err_rest.Err
-	FindUser(string) (*userDomain, *err_rest.Err)
-	DeleteUser(string) *err_rest.Err
+type userDomain struct {
+	password string
+	email    string
+	name     string
+	age      int8
+}
+
+func (u *userDomain) GetEmail() string {
+	return u.email
+}
+func (u *userDomain) GetPassword() string {
+	return u.password
+}
+func (u *userDomain) GetName() string {
+	return u.name
+}
+func (u *userDomain) GetAge() int8 {
+	return u.age
 }
 
 func NewUserDomain(
@@ -26,16 +38,16 @@ func NewUserDomain(
 	age int8,
 ) UserDomainInterface {
 	return &userDomain{
-		Email:    email,
-		Password: password,
-		Name:     name,
-		Age:      age,
+		email,
+		password,
+		name,
+		age,
 	}
 }
 
 func (u *userDomain) EncryptPassword() {
 	hash := md5.New()
 	defer hash.Reset()
-	hash.Write([]byte(u.Password))
-	u.Password = hex.EncodeToString(hash.Sum(nil))
+	hash.Write([]byte(u.password))
+	u.password = hex.EncodeToString(hash.Sum(nil))
 }
