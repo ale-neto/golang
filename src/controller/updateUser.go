@@ -4,4 +4,4 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UpdateUser(c *gin.Context) {}
+func (u *userControllerInterface) UpdateUser(c *gin.Context) {}
