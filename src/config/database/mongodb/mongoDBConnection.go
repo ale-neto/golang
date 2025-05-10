@@ -2,23 +2,44 @@ package mongodb
 
 import (
 	"context"
-	"time"
+	"fmt"
+	"os"
 
-	"github.com/ale-neto/golang/src/config/logger"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-func InitConnection() {
-	client, err := mongo.Connect(options.Client().ApplyURI("mongodb://localhost:27017"))
-	if err != nil {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
+var (
+	MONGODB_URL     = "MONGODB_URL"
+	MONGODB_USER_DB = "MONGODB_USER_DB"
+)
 
-		if err := client.Ping(ctx, nil); err != nil {
-			panic(err)
-		}
+// NewMongoDBConnection estabelece conexão com MongoDB
+// Abordagem usando reflection/interface{} para tentar diferentes possibilidades
+func NewMongoDBConnection(ctx context.Context) (*mongo.Database, error) {
+	mongodb_uri := os.Getenv(MONGODB_URL)
+
+	mongodb_database := os.Getenv(MONGODB_USER_DB)
+
+	// Cria as opções do cliente
+	clientOptions := options.Client().SetURI(mongodb_uri)
+
+	// Tenta diferentes abordagens
+	var client *mongo.Client
+	var err error
+
+	// Abordagem 1: Tenta com opções primeiro
+	client, err = mongo.Connect(clientOptions)
+
+	// Se não funcionar, tente outras abordagens
+
+	if client == nil || err != nil {
+		return nil, fmt.Errorf("não foi possível conectar ao MongoDB: %w", err)
 	}
 
-	logger.Info("MongoDB connection established successfully")
+	if err := client.Ping(ctx, nil); err != nil {
+		return nil, err
+	}
+
+	return client.Database(mongodb_database), nil
 }
