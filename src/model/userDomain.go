@@ -3,6 +3,8 @@ package model
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
+	"fmt"
 )
 
 type UserDomainInterface interface {
@@ -10,27 +12,38 @@ type UserDomainInterface interface {
 	GetEmail() string
 	GetName() string
 	GetPassword() string
+	GetJSONValue() (string, error)
 	EncryptPassword()
 }
 
 type userDomain struct {
-	password string
-	email    string
-	name     string
-	age      int8
+	Password string
+	Email    string
+	Name     string
+	Age      int8
+}
+
+func (u *userDomain) GetJSONValue() (string, error) {
+	b, err := json.Marshal(u)
+	if err != nil {
+		fmt.Println("Error marshalling user domain:", err)
+		return "", err
+	}
+
+	return string(b), nil
 }
 
 func (u *userDomain) GetEmail() string {
-	return u.email
+	return u.Email
 }
 func (u *userDomain) GetPassword() string {
-	return u.password
+	return u.Password
 }
 func (u *userDomain) GetName() string {
-	return u.name
+	return u.Name
 }
 func (u *userDomain) GetAge() int8 {
-	return u.age
+	return u.Age
 }
 
 func NewUserDomain(
@@ -48,6 +61,6 @@ func NewUserDomain(
 func (u *userDomain) EncryptPassword() {
 	hash := md5.New()
 	defer hash.Reset()
-	hash.Write([]byte(u.password))
-	u.password = hex.EncodeToString(hash.Sum(nil))
+	hash.Write([]byte(u.Password))
+	u.Password = hex.EncodeToString(hash.Sum(nil))
 }
