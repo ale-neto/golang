@@ -14,13 +14,19 @@ type UserDomainInterface interface {
 	GetPassword() string
 	GetJSONValue() (string, error)
 	EncryptPassword()
+	SetID(string)
 }
 
 type userDomain struct {
+	ID       string
 	Password string
 	Email    string
 	Name     string
 	Age      int8
+}
+
+func (u *userDomain) SetID(id string) {
+	u.ID = id
 }
 
 func (u *userDomain) GetJSONValue() (string, error) {
@@ -51,10 +57,10 @@ func NewUserDomain(
 	age int8,
 ) UserDomainInterface {
 	return &userDomain{
-		email,
-		password,
-		name,
-		age,
+		Email:    email,
+		Password: password,
+		Name:     name,
+		Age:      age,
 	}
 }
 

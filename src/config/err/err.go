@@ -79,3 +79,11 @@ func NewForbiddenErr(message string, causes []Causes) *Err {
 		Causes:  causes,
 	}
 }
+
+func NewInternalServerError(message string) *Err {
+	return &Err{
+		Message: message,
+		Err:     "internal_server_error",
+		Code:    http.StatusInternalServerError,
+	}
+}
