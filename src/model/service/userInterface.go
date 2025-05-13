@@ -3,13 +3,17 @@ package service
 import (
 	err_rest "github.com/ale-neto/golang/src/config/err"
 	"github.com/ale-neto/golang/src/model"
+	"github.com/ale-neto/golang/src/model/repository"
 )
 
-func NewUserDomainService() UserDomainService {
-	return &userDomainService{}
+func NewUserDomainService(
+	userRepository repository.UserRepository,
+) UserDomainService {
+	return &userDomainService{userRepository}
 }
 
 type userDomainService struct {
+	userRepository repository.UserRepository
 }
 
 type UserDomainService interface {

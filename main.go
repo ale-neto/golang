@@ -1,13 +1,12 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/ale-neto/golang/src/config/database/mongodb"
 	"github.com/ale-neto/golang/src/config/logger"
-	"github.com/ale-neto/golang/src/controller"
 	"github.com/ale-neto/golang/src/controller/routes"
-	"github.com/ale-neto/golang/src/model/service"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -19,10 +18,11 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	mongodb.InitConnection()
+	database, err := mongodb.NewMongoDBConnection(context.Background())
 
-	service := service.NewUserDomainService()
-	userController := controller.NewUserControllerInterface(service)
+	if err != nil {
+		log.Fatal("Error connecting to MongoDB: ", err)
+	}
 
 	router := gin.Default()
 	routes.InitRoutes(&router.RouterGroup, userController)

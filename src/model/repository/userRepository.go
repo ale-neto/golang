@@ -7,9 +7,8 @@ import (
 )
 
 func NewUserRepository(dataBaseConnection *mongo.Database) UserRepository {
-	return *userRepository{
-		database,
-	}
+	return &userRepository{
+		database}
 }
 
 type userRepository struct {
