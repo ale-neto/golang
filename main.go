@@ -19,10 +19,11 @@ func main() {
 	}
 
 	database, err := mongodb.NewMongoDBConnection(context.Background())
-
 	if err != nil {
 		log.Fatal("Error connecting to MongoDB: ", err)
 	}
+
+	userController := initDependencies(database)
 
 	router := gin.Default()
 	routes.InitRoutes(&router.RouterGroup, userController)
