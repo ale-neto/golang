@@ -7,6 +7,7 @@ import (
 	err_rest "github.com/ale-neto/golang/src/config/err"
 	"github.com/ale-neto/golang/src/config/logger"
 	"github.com/ale-neto/golang/src/model"
+	"github.com/ale-neto/golang/src/model/repository/entity/converter"
 )
 
 var (
@@ -19,7 +20,7 @@ func (u *userRepository) CreateUser(userDomain model.UserDomainInterface) (model
 
 	colletion := u.dataBaseConnection.Collection(collectionName)
 
-	value, err := userDomain.GetJSONValue()
+	value, err := converter.ConvertDomainToEntity(userDomain)
 	if err != nil {
 		return nil, err_rest.NewInternalServerError("Erro ao converter usuário para JSON" + err.Error())
 	}
