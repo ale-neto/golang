@@ -1,50 +1,33 @@
 package model
 
-import (
-	"crypto/md5"
-	"encoding/hex"
-	"encoding/json"
-	"fmt"
-)
-
 type userDomain struct {
 	id       string
-	password string
 	email    string
+	password string
 	name     string
 	age      int8
 }
 
-func (u *userDomain) SetID(id string) {
-	u.id = id
+func (ud *userDomain) GetID() string {
+	return ud.id
 }
 
-func (u *userDomain) GetJSONValue() (string, error) {
-	b, err := json.Marshal(u)
-	if err != nil {
-		fmt.Println("Error marshalling user domain:", err)
-		return "", err
-	}
-
-	return string(b), nil
+func (ud *userDomain) SetID(id string) {
+	ud.id = id
 }
 
-func (u *userDomain) EncryptPassword() {
-	hash := md5.New()
-	defer hash.Reset()
-	hash.Write([]byte(u.password))
-	u.password = hex.EncodeToString(hash.Sum(nil))
+func (ud *userDomain) GetEmail() string {
+	return ud.email
 }
 
-func (u *userDomain) GetEmail() string {
-	return u.email
+func (ud *userDomain) GetPassword() string {
+	return ud.password
 }
-func (u *userDomain) GetPassword() string {
-	return u.password
+
+func (ud *userDomain) GetName() string {
+	return ud.name
 }
-func (u *userDomain) GetName() string {
-	return u.name
-}
-func (u *userDomain) GetAge() int8 {
-	return u.age
+
+func (ud *userDomain) GetAge() int8 {
+	return ud.age
 }
