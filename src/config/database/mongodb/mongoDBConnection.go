@@ -22,7 +22,7 @@ func NewMongoDBConnection(ctx context.Context) (*mongo.Database, error) {
 	mongodb_database := os.Getenv(MONGODB_USER_DB)
 
 	// Cria as opções do cliente
-	clientOptions := options.Client().SetURI(mongodb_uri)
+	clientOptions := options.Client().ApplyURI(mongodb_uri)
 
 	// Tenta diferentes abordagens
 	var client *mongo.Client

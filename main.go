@@ -7,7 +7,6 @@ import (
 	"github.com/ale-neto/golang/src/config/database/mongodb"
 	"github.com/ale-neto/golang/src/config/logger"
 	"github.com/ale-neto/golang/src/controller/routes"
-	"github.com/ale-neto/golang/src/model/service"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -23,10 +22,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Error connecting to MongoDB: ", err)
 	}
-
-	repo := mongodb.NewUserRepository(database)
-	service := service.NewUserDomainService(repo)
-	userController := service.NewUserControllerInterface(service)
 
 	userController := initDependencies(database)
 

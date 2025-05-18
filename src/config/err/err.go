@@ -44,12 +44,11 @@ func NewBadRequestValidationErr(message string, causes []Causes) *Err {
 	}
 }
 
-func NewInternalServerErr(message string, causes []Causes) *Err {
+func NewInternalServerErr(message string) *Err {
 	return &Err{
 		Message: message,
 		Err:     "internal server error",
 		Code:    http.StatusInternalServerError,
-		Causes:  causes,
 	}
 }
 
@@ -62,12 +61,11 @@ func NewNotFoundErr(message string, causes []Causes) *Err {
 	}
 }
 
-func NewUnauthorizedErr(message string, causes []Causes) *Err {
+func NewUnauthorizedErr(message string) *Err {
 	return &Err{
 		Message: message,
 		Err:     "unauthorized",
 		Code:    http.StatusUnauthorized,
-		Causes:  causes,
 	}
 }
 

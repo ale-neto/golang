@@ -19,7 +19,7 @@ func NewUserRepository(
 }
 
 type userRepository struct {
-	dataBaseConnection *mongo.Database
+	databaseConnection *mongo.Database
 }
 
 type UserRepository interface {
@@ -27,23 +27,7 @@ type UserRepository interface {
 		userDomain model.UserDomainInterface,
 	) (model.UserDomainInterface, *err_rest.Err)
 
-	UpdateUser(
-		userId string,
-		userDomain model.UserDomainInterface,
-	) *err_rest.Err
-
 	DeleteUser(
 		userId string,
 	) *err_rest.Err
-
-	FindUserByEmail(
-		email string,
-	) (model.UserDomainInterface, *err_rest.Err)
-	FindUserByEmailAndPassword(
-		email string,
-		password string,
-	) (model.UserDomainInterface, *err_rest.Err)
-	FindUserByID(
-		id string,
-	) (model.UserDomainInterface, *err_rest.Err)
 }

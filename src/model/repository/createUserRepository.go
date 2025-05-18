@@ -4,30 +4,46 @@ import (
 	"context"
 	"os"
 
+	"go.mongodb.org/mongo-driver/v2/bson"
+
 	err_rest "github.com/ale-neto/golang/src/config/err"
 	"github.com/ale-neto/golang/src/config/logger"
 	"github.com/ale-neto/golang/src/model"
 	"github.com/ale-neto/golang/src/model/repository/entity/converter"
+	"go.uber.org/zap"
 )
 
-var (
-	MONGODB_USER_DB = "MONGODB_USER_DB"
-)
+func (ur *userRepository) CreateUser(
+	userDomain model.UserDomainInterface,
+) (model.UserDomainInterface, *err_rest.Err) {
+	logger.Info("Init createUser repository",
+		zap.String("journey", "createUser"))
 
-func (u *userRepository) CreateUser(userDomain model.UserDomainInterface) (model.UserDomainInterface, *err_rest.Err) {
-	logger.Info("CreateUser - Iniciando criação de usuário")
 	collectionName := os.Getenv(MONGODB_USER_DB)
+	collection := ur.databaseConnection.Collection(collectionName)
 
-	colletion := u.dataBaseConnection.Collection(collectionName)
+	value := converter.ConvertDomainToEntity(userDomain)
 
-	value, err := converter.ConvertDomainToEntity(userDomain)
-
-	result, err := colletion.InsertOne(context.TODO(), value)
+	result, err := collection.InsertOne(context.Background(), value)
 	if err != nil {
-		return nil, err_rest.NewInternalServerError("Erro ao converter usuário para JSON" + err.Error())
+		logger.Error("Error trying to create user",
+			err,
+			zap.String("journey", "createUser"))
+		return nil, err_rest.NewInternalServerError(err.Error())
 	}
 
-	userDomain.SetID(result.InsertedID.(string))
+	oid, ok := result.InsertedID.(bson.ObjectID)
+	if !ok {
+		logger.Error("Erro ao criar usuário", err, zap.String("journey", "createUser"))
 
-	return userDomain, nil
+		return nil, err_rest.NewInternalServerError("Error casting InsertedID to ObjectID")
+	}
+
+	value.ID = oid
+
+	logger.Info("CreateUser repository executed successfully",
+		zap.String("userId", value.ID.Hex()),
+		zap.String("journey", "createUser"))
+
+	return converter.ConvertEntityToDomain(*value), nil
 }
