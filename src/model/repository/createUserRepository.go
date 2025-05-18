@@ -21,9 +21,6 @@ func (u *userRepository) CreateUser(userDomain model.UserDomainInterface) (model
 	colletion := u.dataBaseConnection.Collection(collectionName)
 
 	value, err := converter.ConvertDomainToEntity(userDomain)
-	if err != nil {
-		return nil, err_rest.NewInternalServerError("Erro ao converter usuário para JSON" + err.Error())
-	}
 
 	result, err := colletion.InsertOne(context.TODO(), value)
 	if err != nil {
