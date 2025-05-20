@@ -5,6 +5,6 @@ import (
 	"github.com/ale-neto/golang/src/model"
 )
 
-func (u *userDomainService) UpdateUser(id string, user model.UserDomainInterface) *err_rest.Err {
+func (u *userDomainService) UpdateUserService(id string, user model.UserDomainInterface) *err_rest.Err {
 	return nil
 }

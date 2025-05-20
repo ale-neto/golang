@@ -5,6 +5,6 @@ import (
 	"github.com/ale-neto/golang/src/model"
 )
 
-func (u *userDomainService) FindUser(string) (*model.UserDomainInterface, *err_rest.Err) {
+func (u *userDomainService) FindUserService(string) (*model.UserDomainInterface, *err_rest.Err) {
 	return nil, nil
 }
