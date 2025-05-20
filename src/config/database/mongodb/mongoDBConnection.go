@@ -10,14 +10,14 @@ import (
 )
 
 var (
-	MONGODB_URL     = "MONGODB_URL"
+	MONGODB_URI     = "MONGODB_URL"
 	MONGODB_USER_DB = "MONGODB_USER_DB"
 )
 
 // NewMongoDBConnection estabelece conexão com MongoDB
 // Abordagem usando reflection/interface{} para tentar diferentes possibilidades
 func NewMongoDBConnection(ctx context.Context) (*mongo.Database, error) {
-	mongodb_uri := os.Getenv(MONGODB_URL)
+	mongodb_uri := os.Getenv(MONGODB_URI)
 
 	mongodb_database := os.Getenv(MONGODB_USER_DB)
 
