@@ -18,7 +18,7 @@ type userDomainService struct {
 
 type UserDomainService interface {
 	DeleteUserService(string) *err_rest.Err
-	CreateUserService(model.UserDomainInterface) *err_rest.Err
+	CreateUserService(model.UserDomainInterface) (model.UserDomainInterface, *err_rest.Err)
 	FindUserService(string) (*model.UserDomainInterface, *err_rest.Err)
 	UpdateUserService(id string, user model.UserDomainInterface) *err_rest.Err
 }
