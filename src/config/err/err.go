@@ -52,12 +52,11 @@ func NewInternalServerErr(message string) *Err {
 	}
 }
 
-func NewNotFoundErr(message string, causes []Causes) *Err {
+func NewNotFoundErr(message string) *Err {
 	return &Err{
 		Message: message,
 		Err:     "not found",
 		Code:    http.StatusNotFound,
-		Causes:  causes,
 	}
 }
 
