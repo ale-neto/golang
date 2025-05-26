@@ -68,12 +68,11 @@ func NewUnauthorizedErr(message string) *Err {
 	}
 }
 
-func NewForbiddenErr(message string, causes []Causes) *Err {
+func NewForbiddenErr(message string) *Err {
 	return &Err{
 		Message: message,
 		Err:     "forbidden",
 		Code:    http.StatusForbidden,
-		Causes:  causes,
 	}
 }
 
