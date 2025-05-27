@@ -26,8 +26,10 @@ type UserRepository interface {
 	CreateUser(
 		userDomain model.UserDomainInterface,
 	) (model.UserDomainInterface, *err_rest.Err)
-
 	DeleteUser(
 		userId string,
 	) *err_rest.Err
+	FindUserByID(
+		id string,
+	) (model.UserDomainInterface, *err_rest.Err)
 }
