@@ -32,4 +32,7 @@ type UserRepository interface {
 	FindUserByID(
 		id string,
 	) (model.UserDomainInterface, *err_rest.Err)
+	FindUserByEmail(
+		email string,
+	) (model.UserDomainInterface, *err_rest.Err)
 }
