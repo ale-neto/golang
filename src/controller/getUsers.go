@@ -17,22 +17,22 @@ func (u *userControllerInterface) FindUserByID(c *gin.Context) {
 		zap.String("journey", "findUserByID"),
 	)
 
-	userId := c.Param("userId")
+	id := c.Param("id")
 
-	if _, err := bson.ObjectIDFromHex(userId); err != nil {
-		logger.Error("Error trying to validate userId",
+	if _, err := bson.ObjectIDFromHex(id); err != nil {
+		logger.Error("Error trying to validate id",
 			err,
 			zap.String("journey", "findUserByID"),
 		)
 		errorMessage := err_rest.NewBadRequestErr(
-			"UserID is not a valid id",
+			"id is not a valid id",
 		)
 
 		c.JSON(errorMessage.Code, errorMessage)
 		return
 	}
 
-	userDomain, err := u.service.FindUserByIDService(userId)
+	userDomain, err := u.service.FindUserByIDService(id)
 	if err != nil {
 		logger.Error("Error trying to call findUserByID services",
 			err,

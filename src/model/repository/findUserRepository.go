@@ -53,7 +53,7 @@ func (ur *userRepository) FindUserByEmail(
 	logger.Info("FindUserByEmail repository executed successfully",
 		zap.String("journey", "findUserByEmail"),
 		zap.String("email", email),
-		zap.String("userId", userEntity.ID.Hex()))
+		zap.String("id", userEntity.ID.Hex()))
 	return converter.ConvertEntityToDomain(*userEntity), nil
 }
 
@@ -95,7 +95,7 @@ func (ur *userRepository) FindUserByID(
 
 	logger.Info("FindUserByID repository executed successfully",
 		zap.String("journey", "findUserByID"),
-		zap.String("userId", userEntity.ID.Hex()))
+		zap.String("id", userEntity.ID.Hex()))
 	return converter.ConvertEntityToDomain(*userEntity), nil
 }
 
@@ -140,6 +140,6 @@ func (ur *userRepository) FindUserByEmailAndPassword(
 	logger.Info("FindUserByEmailAndPassword repository executed successfully",
 		zap.String("journey", "findUserByEmailAndPassword"),
 		zap.String("email", email),
-		zap.String("userId", userEntity.ID.Hex()))
+		zap.String("id", userEntity.ID.Hex()))
 	return converter.ConvertEntityToDomain(*userEntity), nil
 }

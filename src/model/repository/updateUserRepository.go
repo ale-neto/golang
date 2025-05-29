@@ -14,7 +14,7 @@ import (
 )
 
 func (ur *userRepository) UpdateUser(
-	userId string,
+	id string,
 	userDomain model.UserDomainInterface,
 ) *err_rest.Err {
 	logger.Info("Init updateUser repository",
@@ -24,7 +24,7 @@ func (ur *userRepository) UpdateUser(
 	collection := ur.databaseConnection.Collection(collection_name)
 
 	value := converter.ConvertDomainToEntity(userDomain)
-	userIdHex, _ := bson.ObjectIDFromHex(userId)
+	userIdHex, _ := bson.ObjectIDFromHex(id)
 
 	filter := bson.D{{Key: "_id", Value: userIdHex}}
 	update := bson.D{{Key: "$set", Value: value}}
@@ -39,7 +39,7 @@ func (ur *userRepository) UpdateUser(
 
 	logger.Info(
 		"updateUser repository executed successfully",
-		zap.String("userId", userId),
+		zap.String("id", id),
 		zap.String("journey", "updateUser"))
 
 	return nil

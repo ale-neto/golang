@@ -12,7 +12,7 @@ import (
 )
 
 func (ur *userRepository) DeleteUser(
-	userId string,
+	id string,
 ) *err_rest.Err {
 	logger.Info("Init deleteUser repository",
 		zap.String("journey", "deleteUser"))
@@ -20,9 +20,9 @@ func (ur *userRepository) DeleteUser(
 	collection_name := os.Getenv(MONGODB_USER_DB)
 	collection := ur.databaseConnection.Collection(collection_name)
 
-	userIdHex, err := bson.ObjectIDFromHex(userId)
+	userIdHex, err := bson.ObjectIDFromHex(id)
 	if err != nil {
-		logger.Error("Error converting userId to ObjectID",
+		logger.Error("Error converting id to ObjectID",
 			err,
 			zap.String("journey", "deleteUser"))
 	}
@@ -39,7 +39,7 @@ func (ur *userRepository) DeleteUser(
 
 	logger.Info(
 		"deleteUser repository executed successfully",
-		zap.String("userId", userId),
+		zap.String("id", id),
 		zap.String("journey", "deleteUser"))
 
 	return nil
