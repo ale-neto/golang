@@ -27,7 +27,7 @@ type UserRepository interface {
 		userDomain model.UserDomainInterface,
 	) (model.UserDomainInterface, *err_rest.Err)
 	DeleteUser(
-		userId string,
+		id string,
 	) *err_rest.Err
 	FindUserByID(
 		id string,
