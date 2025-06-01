@@ -17,9 +17,9 @@ func (u *userControllerInterface) UpdateUser(c *gin.Context) {
 	logger.Info("Init updateUser controller",
 		zap.String("journey", "updateUser"),
 	)
-	var userRequest request.UserUpdateRequest
+	var UserUpdateRequest request.UserUpdateRequest
 
-	if err := c.ShouldBindJSON(&userRequest); err != nil {
+	if err := c.ShouldBindJSON(&UserUpdateRequest); err != nil {
 		logger.Error("Error trying to validate user info", err,
 			zap.String("journey", "updateUser"))
 		errRest := validation.ValidateUserError(err)
@@ -28,17 +28,17 @@ func (u *userControllerInterface) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	userId := c.Param("userId")
-	if _, err := bson.ObjectIDFromHex(userId); err != nil {
-		errRest := err_rest.NewBadRequestErr("Invalid userId, must be a hex value")
+	id := c.Param("id")
+	if _, err := bson.ObjectIDFromHex(id); err != nil {
+		errRest := err_rest.NewBadRequestErr("Invalid ID, must be a hex value")
 		c.JSON(errRest.Code, errRest)
 	}
 
 	domain := model.NewUserUpdateDomain(
-		userRequest.Name,
-		userRequest.Age,
+		UserUpdateRequest.Name,
+		UserUpdateRequest.Age,
 	)
-	err := u.service.UpdateUser(userId, domain)
+	err := u.service.UpdateUserService(id, domain)
 	if err != nil {
 		logger.Error(
 			"Error trying to call updateUser service",
@@ -50,7 +50,7 @@ func (u *userControllerInterface) UpdateUser(c *gin.Context) {
 
 	logger.Info(
 		"updateUser controller executed successfully",
-		zap.String("userId", userId),
+		zap.String("id", id),
 		zap.String("journey", "updateUser"))
 
 	c.Status(http.StatusOK)
