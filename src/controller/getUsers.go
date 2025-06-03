@@ -55,10 +55,10 @@ func (u *userControllerInterface) FindUserByEmail(c *gin.Context) {
 		zap.String("journey", "findUserByEmail"),
 	)
 
-	userEmail := c.Param("userEmail")
+	email := c.Param("email")
 
-	if _, err := mail.ParseAddress(userEmail); err != nil {
-		logger.Error("Error trying to validate userEmail",
+	if _, err := mail.ParseAddress(email); err != nil {
+		logger.Error("Error trying to validate email",
 			err,
 			zap.String("journey", "findUserByEmail"),
 		)
@@ -70,7 +70,7 @@ func (u *userControllerInterface) FindUserByEmail(c *gin.Context) {
 		return
 	}
 
-	userDomain, err := u.service.FindUserByEmailService(userEmail)
+	userDomain, err := u.service.FindUserByEmailService(email)
 	if err != nil {
 		logger.Error("Error trying to call findUserByEmail services",
 			err,
