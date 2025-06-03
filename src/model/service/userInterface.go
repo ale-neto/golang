@@ -24,4 +24,5 @@ type UserDomainService interface {
 	FindUserByEmailService(
 		email string,
 	) (model.UserDomainInterface, *err_rest.Err)
+	LoginUserService(model.UserDomainInterface) (model.UserDomainInterface, string, *err_rest.Err)
 }
