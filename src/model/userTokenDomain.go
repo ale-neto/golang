@@ -17,14 +17,14 @@ var (
 	JWT_SECRET_KEY = "JWT_SECRET_KEY"
 )
 
-func (ud *userDomain) GenerateToken() (string, *err_rest.Err) {
+func (u *userDomain) GenerateToken() (string, *err_rest.Err) {
 	secret := os.Getenv(JWT_SECRET_KEY)
 
 	claims := jwt.MapClaims{
-		"id":    ud.id,
-		"email": ud.email,
-		"name":  ud.name,
-		"age":   ud.age,
+		"id":    u.id,
+		"email": u.email,
+		"name":  u.name,
+		"age":   u.age,
 		"exp":   time.Now().Add(time.Hour * 24).Unix(),
 	}
 
