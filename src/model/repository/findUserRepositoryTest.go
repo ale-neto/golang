@@ -8,7 +8,6 @@ import (
 	"github.com/ale-neto/golang/src/model/repository/entity"
 	"github.com/stretchr/testify/assert"
 
-	"go.mongodb.org/mongo-driver/mongo/integration/mtest"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
