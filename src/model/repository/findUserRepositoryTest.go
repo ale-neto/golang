@@ -1,235 +1,185 @@
 package repository
 
 import (
-	"fmt"
-	"os"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"testing"
 
-	"github.com/ale-neto/golang/src/model/repository/entity"
+	err_rest "github.com/ale-neto/golang/src/config/err"
+	"github.com/ale-neto/golang/src/model"
+	"github.com/ale-neto/golang/src/test/mocks"
+	"github.com/gin-gonic/gin"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-
-	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func TestUserRepository_FindUserByEmail(t *testing.T) {
-	databaseName := "user_database_test"
-	collectionName := "user_collection_test"
+func TestUserControllerInterface_FindUserByEmail(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-	err := os.Setenv("MONGODB_USER_DB", collectionName)
-	if err != nil {
-		t.FailNow()
-		return
-	}
-	defer os.Clearenv()
+	service := mocks.NewMockUserDomainService(ctrl)
+	controller := NewUserControllerInterface(service)
 
-	mtestDb := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
-	defer mtestDb.Close()
+	t.Run("email_is_invalid_returns_error", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		context := GetTestGinContext(recorder)
 
-	mtestDb.Run("when_sending_a_valid_email_returns_success", func(mt *mtest.T) {
-		userEntity := entity.UserEntity{
-			ID:       bson.NewObjectID(),
-			Email:    "test@test.com",
-			Password: "test",
-			Name:     "test",
-			Age:      50,
+		param := []gin.Param{
+			{
+				Key:   "userEmail",
+				Value: "TEST_ERROR",
+			},
 		}
-		mt.AddMockResponses(mtest.CreateCursorResponse(
-			1,
-			fmt.Sprintf("%s.%s", databaseName, collectionName),
-			mtest.FirstBatch,
-			convertEntityToBson(userEntity)))
 
-		databaseMock := mt.Client.Database(databaseName)
+		MakeRequest(context, param, url.Values{}, "GET", nil)
+		controller.FindUserByEmail(context)
 
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByEmail(userEntity.Email)
-
-		assert.Nil(t, err)
-		assert.EqualValues(t, userDomain.GetID(), userEntity.ID.Hex())
-		assert.EqualValues(t, userDomain.GetEmail(), userDomain.GetEmail())
-		assert.EqualValues(t, userDomain.GetName(), userDomain.GetName())
-		assert.EqualValues(t, userDomain.GetAge(), userDomain.GetAge())
-		assert.EqualValues(t, userDomain.GetPassword(), userDomain.GetPassword())
+		assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 	})
 
-	mtestDb.Run("returns_error_when_mongodb_returns_error", func(mt *mtest.T) {
-		mt.AddMockResponses(bson.D{
-			{Key: "ok", Value: 0},
-		})
+	t.Run("email_is_valid_service_returns_error", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		context := GetTestGinContext(recorder)
 
-		databaseMock := mt.Client.Database(databaseName)
+		param := []gin.Param{
+			{
+				Key:   "userEmail",
+				Value: "test@test.com",
+			},
+		}
 
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByEmail("test")
+		service.EXPECT().FindUserByEmailServices("test@test.com").Return(
+			nil, err_rest.NewInternalServerError("error test"))
 
-		assert.NotNil(t, err)
-		assert.Nil(t, userDomain)
+		MakeRequest(context, param, url.Values{}, "GET", nil)
+		controller.FindUserByEmail(context)
+
+		assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
 	})
 
-	mtestDb.Run("returns_no_document_found", func(mt *mtest.T) {
-		mt.AddMockResponses(mtest.CreateCursorResponse(
-			0,
-			fmt.Sprintf("%s.%s", databaseName, collectionName),
-			mtest.FirstBatch))
+	t.Run("email_is_valid_service_returns_success", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		context := GetTestGinContext(recorder)
 
-		databaseMock := mt.Client.Database(databaseName)
+		param := []gin.Param{
+			{
+				Key:   "userEmail",
+				Value: "test@test.com",
+			},
+		}
 
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByEmail("test")
+		service.EXPECT().FindUserByEmailServices("test@test.com").Return(
+			model.NewUserDomain(
+				"test@test.com",
+				"test",
+				"test",
+				20), nil)
 
-		assert.NotNil(t, err)
-		assert.Nil(t, userDomain)
+		MakeRequest(context, param, url.Values{}, "GET", nil)
+		controller.FindUserByEmail(context)
+
+		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	})
+
 }
 
-func TestUserRepository_FindUserByEmailAndPassword(t *testing.T) {
-	databaseName := "user_database_test"
-	collectionName := "user_collection_test"
+func TestUserControllerInterface_FindUserById(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-	err := os.Setenv("MONGODB_USER_DB", collectionName)
-	if err != nil {
-		t.FailNow()
-		return
-	}
-	defer os.Clearenv()
+	service := mocks.NewMockUserDomainService(ctrl)
+	controller := NewUserControllerInterface(service)
 
-	mtestDb := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
-	defer mtestDb.Close()
+	t.Run("id_is_invalid_returns_error", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		context := GetTestGinContext(recorder)
 
-	mtestDb.Run("when_sending_a_valid_email_and_password_returns_success", func(mt *mtest.T) {
-		userEntity := entity.UserEntity{
-			ID:       bson.NewObjectID(),
-			Email:    "test@test.com",
-			Password: "test",
-			Name:     "test",
-			Age:      50,
+		param := []gin.Param{
+			{
+				Key:   "userId",
+				Value: "teste",
+			},
 		}
-		mt.AddMockResponses(mtest.CreateCursorResponse(
-			1,
-			fmt.Sprintf("%s.%s", databaseName, collectionName),
-			mtest.FirstBatch,
-			convertEntityToBson(userEntity)))
 
-		databaseMock := mt.Client.Database(databaseName)
+		MakeRequest(context, param, url.Values{}, "GET", nil)
+		controller.FindUserByID(context)
 
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByEmailAndPassword(userEntity.Email, userEntity.Password)
-
-		assert.Nil(t, err)
-		assert.EqualValues(t, userDomain.GetID(), userEntity.ID.Hex())
-		assert.EqualValues(t, userDomain.GetEmail(), userDomain.GetEmail())
-		assert.EqualValues(t, userDomain.GetName(), userDomain.GetName())
-		assert.EqualValues(t, userDomain.GetAge(), userDomain.GetAge())
-		assert.EqualValues(t, userDomain.GetPassword(), userDomain.GetPassword())
+		assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 	})
 
-	mtestDb.Run("returns_error_when_mongodb_returns_error", func(mt *mtest.T) {
-		mt.AddMockResponses(bson.D{
-			{Key: "ok", Value: 0},
-		})
+	t.Run("id_is_valid_service_returns_error", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		context := GetTestGinContext(recorder)
+		id := primitive.NewObjectID().Hex()
 
-		databaseMock := mt.Client.Database(databaseName)
+		param := []gin.Param{
+			{
+				Key:   "userId",
+				Value: id,
+			},
+		}
 
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByEmailAndPassword("test", "testpass")
-		assert.NotNil(t, err)
-		assert.Nil(t, userDomain)
+		service.EXPECT().FindUserByIDServices(id).Return(
+			nil, err_rest.NewInternalServerError("error test"))
+
+		MakeRequest(context, param, url.Values{}, "GET", nil)
+		controller.FindUserByID(context)
+
+		assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
 	})
 
-	mtestDb.Run("returns_no_document_found", func(mt *mtest.T) {
-		mt.AddMockResponses(mtest.CreateCursorResponse(
-			0,
-			fmt.Sprintf("%s.%s", databaseName, collectionName),
-			mtest.FirstBatch))
+	t.Run("email_is_valid_service_returns_success", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		context := GetTestGinContext(recorder)
+		id := primitive.NewObjectID().Hex()
 
-		databaseMock := mt.Client.Database(databaseName)
+		param := []gin.Param{
+			{
+				Key:   "userId",
+				Value: id,
+			},
+		}
 
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByEmailAndPassword("test", "testpass")
+		service.EXPECT().FindUserByIDServices(id).Return(
+			model.NewUserDomain(
+				"test@test.com",
+				"test",
+				"test",
+				20), nil)
 
-		assert.NotNil(t, err)
-		assert.Nil(t, userDomain)
+		MakeRequest(context, param, url.Values{}, "GET", nil)
+		controller.FindUserByID(context)
+
+		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	})
+
 }
 
-func TestUserRepository_FindUserById(t *testing.T) {
-	databaseName := "user_database_test"
-	collectionName := "user_collection_test"
+func GetTestGinContext(recorder *httptest.ResponseRecorder) *gin.Context {
+	gin.SetMode(gin.TestMode)
 
-	err := os.Setenv("MONGODB_USER_DB", collectionName)
-	if err != nil {
-		t.FailNow()
-		return
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Request = &http.Request{
+		Header: make(http.Header),
+		URL:    &url.URL{},
 	}
-	defer os.Clearenv()
 
-	mtestDb := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
-	defer mtestDb.Close()
-
-	mtestDb.Run("when_sending_a_valid_id_returns_success", func(mt *mtest.T) {
-		userEntity := entity.UserEntity{
-			ID:       bson.NewObjectID(),
-			Email:    "test@test.com",
-			Password: "test",
-			Name:     "test",
-			Age:      50,
-		}
-		mt.AddMockResponses(mtest.CreateCursorResponse(
-			1,
-			fmt.Sprintf("%s.%s", databaseName, collectionName),
-			mtest.FirstBatch,
-			convertEntityToBson(userEntity)))
-
-		databaseMock := mt.Client.Database(databaseName)
-
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByID(userEntity.ID.Hex())
-
-		assert.Nil(t, err)
-		assert.EqualValues(t, userDomain.GetID(), userEntity.ID.Hex())
-		assert.EqualValues(t, userDomain.GetEmail(), userDomain.GetEmail())
-		assert.EqualValues(t, userDomain.GetName(), userDomain.GetName())
-		assert.EqualValues(t, userDomain.GetAge(), userDomain.GetAge())
-		assert.EqualValues(t, userDomain.GetPassword(), userDomain.GetPassword())
-	})
-
-	mtestDb.Run("returns_error_when_mongodb_returns_error", func(mt *mtest.T) {
-		mt.AddMockResponses(bson.D{
-			{Key: "ok", Value: 0},
-		})
-
-		databaseMock := mt.Client.Database(databaseName)
-
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByID("test")
-
-		assert.NotNil(t, err)
-		assert.Nil(t, userDomain)
-	})
-
-	mtestDb.Run("returns_no_document_found", func(mt *mtest.T) {
-		mt.AddMockResponses(mtest.CreateCursorResponse(
-			0,
-			fmt.Sprintf("%s.%s", databaseName, collectionName),
-			mtest.FirstBatch))
-
-		databaseMock := mt.Client.Database(databaseName)
-
-		repo := NewUserRepository(databaseMock)
-		userDomain, err := repo.FindUserByID("test")
-
-		assert.NotNil(t, err)
-		assert.Equal(t, err.Message, fmt.Sprintf("User not found with this ID: test"))
-		assert.Nil(t, userDomain)
-	})
+	return ctx
 }
 
-func convertEntityToBson(userEntity entity.UserEntity) bson.D {
-	return bson.D{
-		{Key: "_id", Value: userEntity.ID},
-		{Key: "email", Value: userEntity.Email},
-		{Key: "password", Value: userEntity.Password},
-		{Key: "name", Value: userEntity.Name},
-		{Key: "age", Value: userEntity.Age},
-	}
+func MakeRequest(
+	c *gin.Context,
+	param gin.Params,
+	u url.Values,
+	method string,
+	body io.ReadCloser) {
+	c.Request.Method = method
+	c.Request.Header.Set("Content-Type", "application/json")
+	c.Params = param
+
+	c.Request.Body = body
+	c.Request.URL.RawQuery = u.Encode()
 }

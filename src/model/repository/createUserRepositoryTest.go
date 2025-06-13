@@ -1,107 +1,64 @@
 package repository
 
 import (
-	"encoding/json"
-	"io"
-	"net/http"
-	"net/http/httptest"
-	"net/url"
-	"strings"
+	"os"
 	"testing"
 
-	err_rest "github.com/ale-neto/golang/src/config/err"
-	"github.com/ale-neto/golang/src/controller/model/request"
 	"github.com/ale-neto/golang/src/model"
-	"github.com/ale-neto/golang/src/test/mocks"
-	"github.com/gin-gonic/gin"
-	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/mongo/integration/mtest"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
-func TestUserControllerInterface_CreateUser(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
+func TestUserRepository_CreateUser(t *testing.T) {
+	databaseName := "user_database_test"
+	collectionName := "user_collection_test"
 
-	service := mocks.NewMockUserDomainService(ctrl)
-	controller := NewUserControllerInterface(service)
+	err := os.Setenv("MONGODB_USER_DB", collectionName)
+	if err != nil {
+		t.FailNow()
+		return
+	}
+	defer os.Clearenv()
 
-	t.Run("validation_got_error", func(t *testing.T) {
-		recorder := httptest.NewRecorder()
-		context := GetTestGinContext(recorder)
+	mtestDb := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
+	defer mtestDb.ClearEvents()
 
-		userRequest := request.UserRequest{
-			Email:    "ERROR@_EMAIL",
-			Password: "teste@",
-			Name:     "test",
-			Age:      0,
-		}
+	mtestDb.Run("when_sending_a_valid_domain_returns_success", func(mt *mtest.T) {
+		mt.AddMockResponses(bson.D{
+			{Key: "ok", Value: 1},
+			{Key: "n", Value: 1},
+			{Key: "acknowledged", Value: true},
+		})
+		databaseMock := mt.Client.Database(databaseName)
 
-		b, _ := json.Marshal(userRequest)
-		stringReader := io.NopCloser(strings.NewReader(string(b)))
+		repo := NewUserRepository(databaseMock)
+		domain := model.NewUserDomain(
+			"test@test.com", "test", "test", 90)
+		userDomain, err := repo.CreateUser(domain)
 
-		MakeRequest(context, []gin.Param{}, url.Values{}, "POST", stringReader)
-		controller.CreateUser(context)
+		_, errId := bson.ObjectIDFromHex(userDomain.GetID())
 
-		assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+		assert.Nil(t, err)
+		assert.Nil(t, errId)
+		assert.EqualValues(t, userDomain.GetEmail(), domain.GetEmail())
+		assert.EqualValues(t, userDomain.GetName(), domain.GetName())
+		assert.EqualValues(t, userDomain.GetAge(), domain.GetAge())
+		assert.EqualValues(t, userDomain.GetPassword(), domain.GetPassword())
 	})
 
-	t.Run("object_is_valid_but_service_returns_error", func(t *testing.T) {
-		recorder := httptest.NewRecorder()
-		context := GetTestGinContext(recorder)
+	mtestDb.Run("return_error_from_database", func(mt *mtest.T) {
+		mt.AddMockResponses(bson.D{
+			{Key: "ok", Value: 0},
+		})
+		databaseMock := mt.Client.Database(databaseName)
 
-		userRequest := request.UserRequest{
-			Email:    "test@test.com",
-			Password: "teste@#@123",
-			Name:     "Test User",
-			Age:      10,
-		}
-
+		repo := NewUserRepository(databaseMock)
 		domain := model.NewUserDomain(
-			userRequest.Email,
-			userRequest.Password,
-			userRequest.Name,
-			userRequest.Age,
-		)
+			"test@test.com", "test", "test", 90)
+		userDomain, err := repo.CreateUser(domain)
 
-		b, _ := json.Marshal(userRequest)
-		stringReader := io.NopCloser(strings.NewReader(string(b)))
-
-		service.EXPECT().CreateUserServices(domain).Return(
-			nil, err_rest.NewInternalServerError("error test"))
-
-		MakeRequest(context, []gin.Param{}, url.Values{}, "POST", stringReader)
-		controller.CreateUser(context)
-
-		assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-	})
-
-	t.Run("object_is_valid_and_service_returns_success", func(t *testing.T) {
-		recorder := httptest.NewRecorder()
-		context := GetTestGinContext(recorder)
-
-		userRequest := request.UserRequest{
-			Email:    "test@test.com",
-			Password: "teste@#@123",
-			Name:     "Test User",
-			Age:      10,
-		}
-
-		domain := model.NewUserDomain(
-			userRequest.Email,
-			userRequest.Password,
-			userRequest.Name,
-			userRequest.Age,
-		)
-
-		b, _ := json.Marshal(userRequest)
-		stringReader := io.NopCloser(strings.NewReader(string(b)))
-
-		service.EXPECT().CreateUserServices(domain).Return(
-			domain, nil)
-
-		MakeRequest(context, []gin.Param{}, url.Values{}, "POST", stringReader)
-		controller.CreateUser(context)
-
-		assert.EqualValues(t, http.StatusOK, recorder.Code)
+		assert.NotNil(t, err)
+		assert.Nil(t, userDomain)
 	})
 }
