@@ -51,7 +51,7 @@ func TestUserControllerInterface_FindUserByEmail(t *testing.T) {
 			},
 		}
 
-		service.EXPECT().FindUserByEmailServices("test@test.com").Return(
+		service.EXPECT().FindUserByEmailService("test@test.com").Return(
 			nil, err_rest.NewInternalServerErr("error test"))
 
 		MakeRequest(context, param, url.Values{}, "GET", nil)
@@ -71,7 +71,7 @@ func TestUserControllerInterface_FindUserByEmail(t *testing.T) {
 			},
 		}
 
-		service.EXPECT().FindUserByEmailServices("test@test.com").Return(
+		service.EXPECT().FindUserByEmailService("test@test.com").Return(
 			model.NewUserDomain(
 				"test@test.com",
 				"test",
@@ -122,7 +122,7 @@ func TestUserControllerInterface_FindUserById(t *testing.T) {
 			},
 		}
 
-		service.EXPECT().FindUserByIDServices(id).Return(
+		service.EXPECT().FindUserByIDService(id).Return(
 			nil, err_rest.NewInternalServerError("error test"))
 
 		MakeRequest(context, param, url.Values{}, "GET", nil)
@@ -143,7 +143,7 @@ func TestUserControllerInterface_FindUserById(t *testing.T) {
 			},
 		}
 
-		service.EXPECT().FindUserByIDServices(id).Return(
+		service.EXPECT().FindUserByIDService(id).Return(
 			model.NewUserDomain(
 				"test@test.com",
 				"test",

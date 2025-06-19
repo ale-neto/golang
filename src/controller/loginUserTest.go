@@ -62,7 +62,7 @@ func TestUserControllerInterface_LoginUser(t *testing.T) {
 		b, _ := json.Marshal(userRequest)
 		stringReader := io.NopCloser(strings.NewReader(string(b)))
 
-		service.EXPECT().LoginUserServices(domain).Return(
+		service.EXPECT().LoginUserService(domain).Return(
 			nil, "", err_rest.NewInternalServerError("error test"))
 
 		MakeRequest(context, []gin.Param{}, url.Values{}, "POST", stringReader)
@@ -89,7 +89,7 @@ func TestUserControllerInterface_LoginUser(t *testing.T) {
 		b, _ := json.Marshal(userRequest)
 		stringReader := io.NopCloser(strings.NewReader(string(b)))
 
-		service.EXPECT().LoginUserServices(domain).Return(
+		service.EXPECT().LoginUserService(domain).Return(
 			domain, id, nil)
 
 		MakeRequest(context, []gin.Param{}, url.Values{}, "POST", stringReader)
