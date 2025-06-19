@@ -95,7 +95,7 @@ func TestUserControllerInterface_UpdateUser(t *testing.T) {
 		b, _ := json.Marshal(userRequest)
 		stringReader := io.NopCloser(strings.NewReader(string(b)))
 
-		service.EXPECT().UpdateUser(id, domain).Return(err_rest.NewInternalServerError("error test"))
+		service.EXPECT().UpdateUserService(id, domain).Return(err_rest.NewInternalServerError("error test"))
 
 		MakeRequest(context, param, url.Values{}, "PUT", stringReader)
 		controller.UpdateUser(context)
@@ -128,7 +128,7 @@ func TestUserControllerInterface_UpdateUser(t *testing.T) {
 		b, _ := json.Marshal(userRequest)
 		stringReader := io.NopCloser(strings.NewReader(string(b)))
 
-		service.EXPECT().UpdateUser(id, domain).Return(nil)
+		service.EXPECT().UpdateUserService(id, domain).Return(nil)
 
 		MakeRequest(context, param, url.Values{}, "PUT", stringReader)
 		controller.UpdateUser(context)

@@ -50,7 +50,7 @@ func TestUserControllerInterface_DeleteUser(t *testing.T) {
 			},
 		}
 
-		service.EXPECT().DeleteUser(id).Return(
+		service.EXPECT().DeleteUserService(id).Return(
 			err_rest.NewInternalServerError("error test"))
 
 		MakeRequest(context, param, url.Values{}, "DELETE", nil)
@@ -71,7 +71,7 @@ func TestUserControllerInterface_DeleteUser(t *testing.T) {
 			},
 		}
 
-		service.EXPECT().DeleteUser(id).Return(nil)
+		service.EXPECT().DeleteUserService(id).Return(nil)
 
 		MakeRequest(context, param, url.Values{}, "DELETE", nil)
 		controller.DeleteUser(context)

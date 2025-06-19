@@ -35,91 +35,91 @@ func (m *MockUserDomainService) EXPECT() *MockUserDomainServiceMockRecorder {
 	return m.recorder
 }
 
-// CreateUserServices mocks base method.
-func (m *MockUserDomainService) CreateUserServices(arg0 model.UserDomainInterface) (model.UserDomainInterface, *err_rest.Err) {
+// CreateUserService mocks base method.
+func (m *MockUserDomainService) CreateUserService(arg0 model.UserDomainInterface) (model.UserDomainInterface, *err_rest.Err) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateUserServices", arg0)
+	ret := m.ctrl.Call(m, "CreateUserService", arg0)
 	ret0, _ := ret[0].(model.UserDomainInterface)
 	ret1, _ := ret[1].(*err_rest.Err)
 	return ret0, ret1
 }
 
-// CreateUserServices indicates an expected call of CreateUserServices.
-func (mr *MockUserDomainServiceMockRecorder) CreateUserServices(arg0 interface{}) *gomock.Call {
+// CreateUserService indicates an expected call of CreateUserService.
+func (mr *MockUserDomainServiceMockRecorder) CreateUserService(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUserServices", reflect.TypeOf((*MockUserDomainService)(nil).CreateUserServices), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUserService", reflect.TypeOf((*MockUserDomainService)(nil).CreateUserService), arg0)
 }
 
-// DeleteUser mocks base method.
-func (m *MockUserDomainService) DeleteUser(arg0 string) *err_rest.Err {
+// DeleteUserService mocks base method.
+func (m *MockUserDomainService) DeleteUserService(arg0 string) *err_rest.Err {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteUser", arg0)
+	ret := m.ctrl.Call(m, "DeleteUserService", arg0)
 	ret0, _ := ret[0].(*err_rest.Err)
 	return ret0
 }
 
-// DeleteUser indicates an expected call of DeleteUser.
-func (mr *MockUserDomainServiceMockRecorder) DeleteUser(arg0 interface{}) *gomock.Call {
+// DeleteUserService indicates an expected call of DeleteUserService.
+func (mr *MockUserDomainServiceMockRecorder) DeleteUserService(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*MockUserDomainService)(nil).DeleteUser), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUserService", reflect.TypeOf((*MockUserDomainService)(nil).DeleteUserService), arg0)
 }
 
-// FindUserByEmailServices mocks base method.
-func (m *MockUserDomainService) FindUserByEmailServices(email string) (model.UserDomainInterface, *err_rest.Err) {
+// FindUserByEmailService mocks base method.
+func (m *MockUserDomainService) FindUserByEmailService(email string) (model.UserDomainInterface, *err_rest.Err) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindUserByEmailServices", email)
+	ret := m.ctrl.Call(m, "FindUserByEmailService", email)
 	ret0, _ := ret[0].(model.UserDomainInterface)
 	ret1, _ := ret[1].(*err_rest.Err)
 	return ret0, ret1
 }
 
-// FindUserByEmailServices indicates an expected call of FindUserByEmailServices.
-func (mr *MockUserDomainServiceMockRecorder) FindUserByEmailServices(email interface{}) *gomock.Call {
+// FindUserByEmailService indicates an expected call of FindUserByEmailService.
+func (mr *MockUserDomainServiceMockRecorder) FindUserByEmailService(email interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByEmailServices", reflect.TypeOf((*MockUserDomainService)(nil).FindUserByEmailServices), email)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByEmailService", reflect.TypeOf((*MockUserDomainService)(nil).FindUserByEmailService), email)
 }
 
-// FindUserByIDServices mocks base method.
-func (m *MockUserDomainService) FindUserByIDServices(id string) (model.UserDomainInterface, *err_rest.Err) {
+// FindUserByIDService mocks base method.
+func (m *MockUserDomainService) FindUserByIDService(id string) (model.UserDomainInterface, *err_rest.Err) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindUserByIDServices", id)
+	ret := m.ctrl.Call(m, "FindUserByIDService", id)
 	ret0, _ := ret[0].(model.UserDomainInterface)
 	ret1, _ := ret[1].(*err_rest.Err)
 	return ret0, ret1
 }
 
-// FindUserByIDServices indicates an expected call of FindUserByIDServices.
-func (mr *MockUserDomainServiceMockRecorder) FindUserByIDServices(id interface{}) *gomock.Call {
+// FindUserByIDService indicates an expected call of FindUserByIDService.
+func (mr *MockUserDomainServiceMockRecorder) FindUserByIDService(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByIDServices", reflect.TypeOf((*MockUserDomainService)(nil).FindUserByIDServices), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByIDService", reflect.TypeOf((*MockUserDomainService)(nil).FindUserByIDService), id)
 }
 
-// LoginUserServices mocks base method.
-func (m *MockUserDomainService) LoginUserServices(userDomain model.UserDomainInterface) (model.UserDomainInterface, string, *err_rest.Err) {
+// LoginUserService mocks base method.
+func (m *MockUserDomainService) LoginUserService(userDomain model.UserDomainInterface) (model.UserDomainInterface, string, *err_rest.Err) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LoginUserServices", userDomain)
+	ret := m.ctrl.Call(m, "LoginUserService", userDomain)
 	ret0, _ := ret[0].(model.UserDomainInterface)
 	ret1, _ := ret[1].(string)
 	ret2, _ := ret[2].(*err_rest.Err)
 	return ret0, ret1, ret2
 }
 
-// LoginUserServices indicates an expected call of LoginUserServices.
-func (mr *MockUserDomainServiceMockRecorder) LoginUserServices(userDomain interface{}) *gomock.Call {
+// LoginUserService indicates an expected call of LoginUserService.
+func (mr *MockUserDomainServiceMockRecorder) LoginUserService(userDomain interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LoginUserServices", reflect.TypeOf((*MockUserDomainService)(nil).LoginUserServices), userDomain)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LoginUserService", reflect.TypeOf((*MockUserDomainService)(nil).LoginUserService), userDomain)
 }
 
-// UpdateUser mocks base method.
-func (m *MockUserDomainService) UpdateUser(arg0 string, arg1 model.UserDomainInterface) *err_rest.Err {
+// UpdateUserService mocks base method.
+func (m *MockUserDomainService) UpdateUserService(arg0 string, arg1 model.UserDomainInterface) *err_rest.Err {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateUser", arg0, arg1)
+	ret := m.ctrl.Call(m, "UpdateUserService", arg0, arg1)
 	ret0, _ := ret[0].(*err_rest.Err)
 	return ret0
 }
 
-// UpdateUser indicates an expected call of UpdateUser.
-func (mr *MockUserDomainServiceMockRecorder) UpdateUser(arg0, arg1 interface{}) *gomock.Call {
+// UpdateUserService indicates an expected call of UpdateUserService.
+func (mr *MockUserDomainServiceMockRecorder) UpdateUserService(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockUserDomainService)(nil).UpdateUser), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUserService", reflect.TypeOf((*MockUserDomainService)(nil).UpdateUserService), arg0, arg1)
 }
