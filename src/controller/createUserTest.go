@@ -65,7 +65,7 @@ func TestUserControllerInterface_CreateUser(t *testing.T) {
 		b, _ := json.Marshal(userRequest)
 		stringReader := io.NopCloser(strings.NewReader(string(b)))
 
-		service.EXPECT().CreateUserServices(domain).Return(
+		service.EXPECT().CreateUserService(domain).Return(
 			nil, rest_err.NewInternalServerError("error test"))
 
 		MakeRequest(context, []gin.Param{}, url.Values{}, "POST", stringReader)
@@ -95,7 +95,7 @@ func TestUserControllerInterface_CreateUser(t *testing.T) {
 		b, _ := json.Marshal(userRequest)
 		stringReader := io.NopCloser(strings.NewReader(string(b)))
 
-		service.EXPECT().CreateUserServices(domain).Return(
+		service.EXPECT().CreateUserService(domain).Return(
 			domain, nil)
 
 		MakeRequest(context, []gin.Param{}, url.Values{}, "POST", stringReader)
