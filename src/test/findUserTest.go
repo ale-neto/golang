@@ -13,6 +13,7 @@ import (
 	"github.com/ale-neto/golang/src/controller"
 	"github.com/ale-neto/golang/src/model/repository"
 	"github.com/ale-neto/golang/src/model/service"
+	"github.com/ale-neto/golang/src/test/connection"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
