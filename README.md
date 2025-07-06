@@ -1,4 +1,4 @@
-# golang
+# Golang
 
 
 This is a basic user CRUD (Create, Read, Update, Delete) API built in Go, designed to demonstrate clean architecture, layered structure, and proper use of Go with MongoDB and Swagger. The project is based on teachings from the [HunCoding YouTube channel](https://www.youtube.com/@HunCoding) and can be freely used, modified, or studied by others.
