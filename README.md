@@ -190,5 +190,3 @@ Special thanks for all the knowledge shared freely on his YouTube channel. This 
 This project is open and free to use — no license restrictions apply.
 
 Enjoy the code and happy coding with Go!
-
-```
