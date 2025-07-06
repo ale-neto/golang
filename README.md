@@ -60,7 +60,7 @@ Or via tools like `curl` and `Postman`.
 
 ```bash
 curl -X POST -H "Content-Type: application/json" \
--d '{"name":"John", "email":"john@example.com", "age":30, "password":"Pass@123"}' \
+-d '{"name":"Alexandre", "email":"alexandre@example.com", "age":30, "password":"Test@123"}' \
 http://localhost:8080/createUser
 ```
 
@@ -68,7 +68,7 @@ http://localhost:8080/createUser
 
 ```bash
 curl -X PUT -H "Content-Type: application/json" \
--d '{"name":"John Doe"}' \
+-d '{"name":"Alexandre Neto"}' \
 http://localhost:8080/updateUser/{userId}
 ```
 
