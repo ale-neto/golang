@@ -8,13 +8,13 @@ import (
 )
 
 func (ud *userDomainService) UpdateUser(
-	userId string,
+	id string,
 	userDomain model.UserDomainInterface,
 ) *rest_err.RestErr {
 	logger.Info("Init updateUser model.",
 		zap.String("journey", "updateUser"))
 
-	err := ud.userRepository.UpdateUser(userId, userDomain)
+	err := ud.userRepository.UpdateUser(id, userDomain)
 	if err != nil {
 		logger.Error("Error trying to call repository",
 			err,
@@ -24,7 +24,7 @@ func (ud *userDomainService) UpdateUser(
 
 	logger.Info(
 		"updateUser service executed successfully",
-		zap.String("userId", userId),
+		zap.String("id", id),
 		zap.String("journey", "updateUser"))
 	return nil
 }

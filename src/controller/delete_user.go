@@ -16,25 +16,25 @@ import (
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param userId path string true "ID of the user to be deleted"
+// @Param id path string true "ID of the user to be deleted"
 // @Success 200
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Failure 400 {object} rest_err.RestErr
 // @Failure 500 {object} rest_err.RestErr
-// @Router /deleteUser/{userId} [delete]
+// @Router /user/delete/{id} [delete]
 func (uc *userControllerInterface) DeleteUser(c *gin.Context) {
 	logger.Info("Init deleteUser controller",
 		zap.String("journey", "deleteUser"),
 	)
 
-	userId := c.Param("userId")
-	if _, err := primitive.ObjectIDFromHex(userId); err != nil {
-		errRest := rest_err.NewBadRequestError("Invalid userId, must be a hex value")
+	id := c.Param("id")
+	if _, err := primitive.ObjectIDFromHex(id); err != nil {
+		errRest := rest_err.NewBadRequestError("Invalid id, must be a hex value")
 		c.JSON(errRest.Code, errRest)
 		return
 	}
 
-	err := uc.service.DeleteUser(userId)
+	err := uc.service.DeleteUser(id)
 	if err != nil {
 		logger.Error(
 			"Error trying to call deleteUser service",
@@ -46,7 +46,7 @@ func (uc *userControllerInterface) DeleteUser(c *gin.Context) {
 
 	logger.Info(
 		"deleteUser controller executed successfully",
-		zap.String("userId", userId),
+		zap.String("id", id),
 		zap.String("journey", "deleteUser"))
 
 	c.Status(http.StatusOK)

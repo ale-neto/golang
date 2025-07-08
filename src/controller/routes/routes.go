@@ -13,11 +13,11 @@ func InitRoutes(
 	r *gin.RouterGroup,
 	userController controller.UserControllerInterface) {
 
-	r.GET("/getUserById/:userId", model.VerifyTokenMiddleware, userController.FindUserByID)
-	r.GET("/getUserByEmail/:userEmail", model.VerifyTokenMiddleware, userController.FindUserByEmail)
-	r.POST("/createUser", userController.CreateUser)
-	r.PUT("/updateUser/:userId", model.VerifyTokenMiddleware, userController.UpdateUser)
-	r.DELETE("/deleteUser/:userId", model.VerifyTokenMiddleware, userController.DeleteUser)
+	r.GET("/user/id/:id", model.VerifyTokenMiddleware, userController.FindUserByID)
+	r.GET("/user/email/:userEmail", model.VerifyTokenMiddleware, userController.FindUserByEmail)
+	r.POST("/user/create", userController.CreateUser)
+	r.PUT("/user/update/:id", model.VerifyTokenMiddleware, userController.UpdateUser)
+	r.DELETE("/user/delete/:id", model.VerifyTokenMiddleware, userController.DeleteUser)
 
 	r.POST("/login", userController.LoginUser)
 

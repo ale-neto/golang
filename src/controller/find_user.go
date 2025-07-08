@@ -18,33 +18,33 @@ import (
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param userId path string true "ID of the user to be retrieved"
+// @Param id path string true "ID of the user to be retrieved"
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Success 200 {object} response.UserResponse "User information retrieved successfully"
 // @Failure 400 {object} rest_err.RestErr "Error: Invalid user ID"
 // @Failure 404 {object} rest_err.RestErr "User not found"
-// @Router /getUserById/{userId} [get]
+// @Router /user/id/{id} [get]
 func (uc *userControllerInterface) FindUserByID(c *gin.Context) {
 	logger.Info("Init findUserByID controller",
 		zap.String("journey", "findUserByID"),
 	)
 
-	userId := c.Param("userId")
+	id := c.Param("id")
 
-	if _, err := primitive.ObjectIDFromHex(userId); err != nil {
-		logger.Error("Error trying to validate userId",
+	if _, err := primitive.ObjectIDFromHex(id); err != nil {
+		logger.Error("Error trying to validate id",
 			err,
 			zap.String("journey", "findUserByID"),
 		)
 		errorMessage := rest_err.NewBadRequestError(
-			"UserID is not a valid id",
+			"id is not a valid id",
 		)
 
 		c.JSON(errorMessage.Code, errorMessage)
 		return
 	}
 
-	userDomain, err := uc.service.FindUserByIDServices(userId)
+	userDomain, err := uc.service.FindUserByIDServices(id)
 	if err != nil {
 		logger.Error("Error trying to call findUserByID services",
 			err,
@@ -73,7 +73,7 @@ func (uc *userControllerInterface) FindUserByID(c *gin.Context) {
 // @Success 200 {object} response.UserResponse "User information retrieved successfully"
 // @Failure 400 {object} rest_err.RestErr "Error: Invalid user ID"
 // @Failure 404 {object} rest_err.RestErr "User not found"
-// @Router /getUserByEmail/{userEmail} [get]
+// @Router /user/email/{userEmail} [get]
 func (uc *userControllerInterface) FindUserByEmail(c *gin.Context) {
 	logger.Info("Init findUserByEmail controller",
 		zap.String("journey", "findUserByEmail"),

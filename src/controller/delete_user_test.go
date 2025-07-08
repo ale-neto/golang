@@ -21,13 +21,13 @@ func TestUserControllerInterface_DeleteUser(t *testing.T) {
 	service := mocks.NewMockUserDomainService(ctrl)
 	controller := NewUserControllerInterface(service)
 
-	t.Run("userId_is_invalid_returns_error", func(t *testing.T) {
+	t.Run("id_is_invalid_returns_error", func(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		context := GetTestGinContext(recorder)
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: "teste",
 			},
 		}
@@ -45,7 +45,7 @@ func TestUserControllerInterface_DeleteUser(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: id,
 			},
 		}
@@ -66,7 +66,7 @@ func TestUserControllerInterface_DeleteUser(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: id,
 			},
 		}

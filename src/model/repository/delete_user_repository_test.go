@@ -23,7 +23,7 @@ func TestUserRepository_DeleteUser(t *testing.T) {
 	mtestDb := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
 	defer mtestDb.Close()
 
-	mtestDb.Run("when_sending_a_valid_userId_return_success", func(mt *mtest.T) {
+	mtestDb.Run("when_sending_a_valid_id_return_success", func(mt *mtest.T) {
 		mt.AddMockResponses(bson.D{
 			{Key: "ok", Value: 1},
 			{Key: "n", Value: 1},

@@ -18,7 +18,7 @@ func TestUserDomainService_UpdateUser(t *testing.T) {
 	repository := mocks.NewMockUserRepository(ctrl)
 	service := NewUserDomainService(repository)
 
-	t.Run("when_sending_a_valid_user_and_userId_returns_success", func(t *testing.T) {
+	t.Run("when_sending_a_valid_user_and_id_returns_success", func(t *testing.T) {
 		id := primitive.NewObjectID().Hex()
 
 		userDomain := model.NewUserDomain("test@test.com", "test", "test", 50)
@@ -31,7 +31,7 @@ func TestUserDomainService_UpdateUser(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
-	t.Run("when_sending_a_invalid_user_and_userId_returns_error", func(t *testing.T) {
+	t.Run("when_sending_a_invalid_user_and_id_returns_error", func(t *testing.T) {
 		id := primitive.NewObjectID().Hex()
 
 		userDomain := model.NewUserDomain("test@test.com", "test", "test", 50)

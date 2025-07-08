@@ -28,12 +28,12 @@ type UserRepository interface {
 	) (model.UserDomainInterface, *rest_err.RestErr)
 
 	UpdateUser(
-		userId string,
+		id string,
 		userDomain model.UserDomainInterface,
 	) *rest_err.RestErr
 
 	DeleteUser(
-		userId string,
+		id string,
 	) *rest_err.RestErr
 
 	FindUserByEmail(

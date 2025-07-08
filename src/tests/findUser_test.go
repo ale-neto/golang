@@ -101,7 +101,7 @@ func TestFindUserById(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: id,
 			},
 		}
@@ -127,7 +127,7 @@ func TestFindUserById(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: id.Hex(),
 			},
 		}
