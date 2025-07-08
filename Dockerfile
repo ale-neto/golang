@@ -9,11 +9,11 @@ COPY initDependencies.go initDependencies.go
 COPY main.go main.go
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on \
- GOOS=linux go build -o meuprimeirocrudgo .
+ go build -o meuprimeirocrudgo .
 
-FROM golang:1.24.2 AS runner
+FROM golang:1.24.2-alpine AS runner
 
-RUN useradd -m -s /bin/bash golang
+RUN adduser -D golang
 
 COPY --from=builder /app/meuprimeirocrudgo /app/meuprimeirocrudgo
 
