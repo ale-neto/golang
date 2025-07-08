@@ -99,7 +99,7 @@ func TestUserControllerInterface_FindUserById(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: "teste",
 			},
 		}
@@ -117,7 +117,7 @@ func TestUserControllerInterface_FindUserById(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: id,
 			},
 		}
@@ -138,7 +138,7 @@ func TestUserControllerInterface_FindUserById(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: id,
 			},
 		}

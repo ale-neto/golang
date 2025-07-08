@@ -2,14 +2,15 @@ package tests
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestDeleteUser(t *testing.T) {
@@ -27,7 +28,7 @@ func TestDeleteUser(t *testing.T) {
 
 	param := []gin.Param{
 		{
-			Key:   "userId",
+			Key:   "id",
 			Value: id.Hex(),
 		},
 	}

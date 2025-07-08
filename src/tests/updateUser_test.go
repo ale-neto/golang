@@ -38,7 +38,7 @@ func TestUpdateUser(t *testing.T) {
 
 	param := []gin.Param{
 		{
-			Key:   "userId",
+			Key:   "id",
 			Value: id.Hex(),
 		},
 	}

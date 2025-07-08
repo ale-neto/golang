@@ -54,7 +54,7 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) {
 
 	logger.Info(
 		"loginUser controller executed successfully",
-		zap.String("userId", domainResult.GetID()),
+		zap.String("id", domainResult.GetID()),
 		zap.String("journey", "loginUser"))
 
 	c.Header("Authorization", token)

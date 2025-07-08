@@ -51,17 +51,17 @@ func (mr *MockUserRepositoryMockRecorder) CreateUser(userDomain interface{}) *go
 }
 
 // DeleteUser mocks base method.
-func (m *MockUserRepository) DeleteUser(userId string) *rest_err.RestErr {
+func (m *MockUserRepository) DeleteUser(id string) *rest_err.RestErr {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteUser", userId)
+	ret := m.ctrl.Call(m, "DeleteUser", id)
 	ret0, _ := ret[0].(*rest_err.RestErr)
 	return ret0
 }
 
 // DeleteUser indicates an expected call of DeleteUser.
-func (mr *MockUserRepositoryMockRecorder) DeleteUser(userId interface{}) *gomock.Call {
+func (mr *MockUserRepositoryMockRecorder) DeleteUser(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*MockUserRepository)(nil).DeleteUser), userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*MockUserRepository)(nil).DeleteUser), id)
 }
 
 // FindUserByEmail mocks base method.
@@ -110,15 +110,15 @@ func (mr *MockUserRepositoryMockRecorder) FindUserByID(id interface{}) *gomock.C
 }
 
 // UpdateUser mocks base method.
-func (m *MockUserRepository) UpdateUser(userId string, userDomain model.UserDomainInterface) *rest_err.RestErr {
+func (m *MockUserRepository) UpdateUser(id string, userDomain model.UserDomainInterface) *rest_err.RestErr {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateUser", userId, userDomain)
+	ret := m.ctrl.Call(m, "UpdateUser", id, userDomain)
 	ret0, _ := ret[0].(*rest_err.RestErr)
 	return ret0
 }
 
 // UpdateUser indicates an expected call of UpdateUser.
-func (mr *MockUserRepositoryMockRecorder) UpdateUser(userId, userDomain interface{}) *gomock.Call {
+func (mr *MockUserRepositoryMockRecorder) UpdateUser(id, userDomain interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockUserRepository)(nil).UpdateUser), userId, userDomain)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockUserRepository)(nil).UpdateUser), id, userDomain)
 }

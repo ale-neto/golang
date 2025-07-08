@@ -31,7 +31,7 @@ func (ud *userDomainService) LoginUserServices(
 
 	logger.Info(
 		"loginUser service executed successfully",
-		zap.String("userId", user.GetID()),
+		zap.String("id", user.GetID()),
 		zap.String("journey", "loginUser"))
 	return user, token, nil
 }

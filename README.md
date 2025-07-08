@@ -61,7 +61,7 @@ Or via tools like `curl` and `Postman`.
 ```bash
 curl -X POST -H "Content-Type: application/json" \
 -d '{"name":"Alexandre", "email":"alexandre@example.com", "age":30, "password":"Test@123"}' \
-http://localhost:8080/createUser
+http://localhost:8080/user/create
 ```
 
 * **Update user**:
@@ -69,13 +69,13 @@ http://localhost:8080/createUser
 ```bash
 curl -X PUT -H "Content-Type: application/json" \
 -d '{"name":"Alexandre Neto"}' \
-http://localhost:8080/updateUser/{userId}
+http://localhost:8080/user/create/{id}
 ```
 
 * **Delete user**:
 
 ```bash
-curl -X DELETE http://localhost:8080/deleteUser/{userId}
+curl -X DELETE http://localhost:8080/user/delete/{id}
 ```
 
 ---
@@ -133,28 +133,28 @@ causes   []struct {
 > For protected endpoints, include the token in the `Authorization` header:
 > `Bearer <your-access-token>`
 
-### **POST /createUser**
+### **POST /user/create**
 
 * Create a new user
 * Body: `UserRequest`
 * Response: `200 OK`, `400 Bad Request`, `500 Internal Server Error`
 
-### **DELETE /deleteUser/{userId}**
+### **DELETE /user/delete/{id}**
 
 * Delete user by ID
-* Path param: `userId`
+* Path param: `id`
 * Response: `200 OK`, `400`, `500`
 
-### **GET /getUserByEmail/{email}**
+### **GET /user/email/{email}**
 
 * Get user by email
 * Path param: `email`
 * Response: `200 OK`, `404 Not Found`, `400 Invalid ID`
 
-### **GET /getUserById/{userId}**
+### **GET /user/id/{id}**
 
 * Get user by ID
-* Path param: `userId`
+* Path param: `id`
 * Response: `200 OK`, `404 Not Found`, `400 Invalid ID`
 
 ### **POST /login**
@@ -163,10 +163,10 @@ causes   []struct {
 * Body: `UserLogin`
 * Response: `200 OK (returns token)`, `403 Forbidden`
 
-### **PUT /updateUser/{userId}**
+### **PUT /user/update/{id}**
 
 * Update user info by ID
-* Path param: `userId`
+* Path param: `id`
 * Body: `UserUpdateRequest`
 * Response: `200 OK`, `400`, `500`
 

@@ -44,7 +44,7 @@ func TestUserControllerInterface_UpdateUser(t *testing.T) {
 		assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 	})
 
-	t.Run("validation_userId_got_error", func(t *testing.T) {
+	t.Run("validation_id_got_error", func(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		context := GetTestGinContext(recorder)
 
@@ -55,7 +55,7 @@ func TestUserControllerInterface_UpdateUser(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: "test",
 			},
 		}
@@ -76,7 +76,7 @@ func TestUserControllerInterface_UpdateUser(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: id,
 			},
 		}
@@ -109,7 +109,7 @@ func TestUserControllerInterface_UpdateUser(t *testing.T) {
 
 		param := []gin.Param{
 			{
-				Key:   "userId",
+				Key:   "id",
 				Value: id,
 			},
 		}

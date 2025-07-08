@@ -22,7 +22,7 @@ import (
 // @Success 200 {object} response.UserResponse
 // @Failure 400 {object} rest_err.RestErr
 // @Failure 500 {object} rest_err.RestErr
-// @Router /createUser [post]
+// @Router /user/create [post]
 func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("Init CreateUser controller",
 		zap.String("journey", "createUser"),
@@ -56,7 +56,7 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 
 	logger.Info(
 		"CreateUser controller executed successfully",
-		zap.String("userId", domainResult.GetID()),
+		zap.String("id", domainResult.GetID()),
 		zap.String("journey", "createUser"))
 
 	c.JSON(http.StatusOK, view.ConvertDomainToResponse(
