@@ -23,7 +23,7 @@ import (
 // @Header 200 {string} Authorization "Authentication token"
 // @Failure 403 {object} rest_err.RestErr "Error: Invalid login credentials"
 // @Router /login [post]
-func (uc *userControllerInterface) LoginUser(c *gin.Context) {
+func (u *userControllerInterface) LoginUser(c *gin.Context) {
 	logger.Info("Init loginUser controller",
 		zap.String("journey", "loginUser"),
 	)
@@ -42,7 +42,7 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) {
 		userRequest.Email,
 		userRequest.Password,
 	)
-	domainResult, token, err := uc.service.LoginUserServices(domain)
+	domainResult, token, err := u.service.LoginUserServices(domain)
 	if err != nil {
 		logger.Error(
 			"Error trying to call loginUser service",

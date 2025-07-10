@@ -22,7 +22,7 @@ import (
 // @Failure 400 {object} rest_err.RestErr
 // @Failure 500 {object} rest_err.RestErr
 // @Router /user/delete/{id} [delete]
-func (uc *userControllerInterface) DeleteUser(c *gin.Context) {
+func (u *userControllerInterface) DeleteUser(c *gin.Context) {
 	logger.Info("Init deleteUser controller",
 		zap.String("journey", "deleteUser"),
 	)
@@ -34,7 +34,7 @@ func (uc *userControllerInterface) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	err := uc.service.DeleteUser(id)
+	err := u.service.DeleteUser(id)
 	if err != nil {
 		logger.Error(
 			"Error trying to call deleteUser service",
