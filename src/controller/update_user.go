@@ -26,7 +26,7 @@ import (
 // @Failure 400 {object} rest_err.RestErr
 // @Failure 500 {object} rest_err.RestErr
 // @Router /user/update/{id} [put]
-func (uc *userControllerInterface) UpdateUser(c *gin.Context) {
+func (u *userControllerInterface) UpdateUser(c *gin.Context) {
 	logger.Info("Init updateUser controller",
 		zap.String("journey", "updateUser"),
 	)
@@ -51,7 +51,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) {
 		userRequest.Name,
 		userRequest.Age,
 	)
-	err := uc.service.UpdateUser(id, domain)
+	err := u.service.UpdateUser(id, domain)
 	if err != nil {
 		logger.Error(
 			"Error trying to call updateUser service",

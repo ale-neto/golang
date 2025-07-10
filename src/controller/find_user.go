@@ -24,7 +24,7 @@ import (
 // @Failure 400 {object} rest_err.RestErr "Error: Invalid user ID"
 // @Failure 404 {object} rest_err.RestErr "User not found"
 // @Router /user/id/{id} [get]
-func (uc *userControllerInterface) FindUserByID(c *gin.Context) {
+func (u *userControllerInterface) FindUserByID(c *gin.Context) {
 	logger.Info("Init findUserByID controller",
 		zap.String("journey", "findUserByID"),
 	)
@@ -44,7 +44,7 @@ func (uc *userControllerInterface) FindUserByID(c *gin.Context) {
 		return
 	}
 
-	userDomain, err := uc.service.FindUserByIDServices(id)
+	userDomain, err := u.service.FindUserByIDServices(id)
 	if err != nil {
 		logger.Error("Error trying to call findUserByID services",
 			err,
@@ -74,7 +74,7 @@ func (uc *userControllerInterface) FindUserByID(c *gin.Context) {
 // @Failure 400 {object} rest_err.RestErr "Error: Invalid user ID"
 // @Failure 404 {object} rest_err.RestErr "User not found"
 // @Router /user/email/{userEmail} [get]
-func (uc *userControllerInterface) FindUserByEmail(c *gin.Context) {
+func (u *userControllerInterface) FindUserByEmail(c *gin.Context) {
 	logger.Info("Init findUserByEmail controller",
 		zap.String("journey", "findUserByEmail"),
 	)
@@ -94,7 +94,7 @@ func (uc *userControllerInterface) FindUserByEmail(c *gin.Context) {
 		return
 	}
 
-	userDomain, err := uc.service.FindUserByEmailServices(userEmail)
+	userDomain, err := u.service.FindUserByEmailServices(userEmail)
 	if err != nil {
 		logger.Error("Error trying to call findUserByEmail services",
 			err,

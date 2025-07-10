@@ -23,7 +23,7 @@ import (
 // @Failure 400 {object} rest_err.RestErr
 // @Failure 500 {object} rest_err.RestErr
 // @Router /user/create [post]
-func (uc *userControllerInterface) CreateUser(c *gin.Context) {
+func (u *userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("Init CreateUser controller",
 		zap.String("journey", "createUser"),
 	)
@@ -44,7 +44,7 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 		userRequest.Name,
 		userRequest.Age,
 	)
-	domainResult, err := uc.service.CreateUserServices(domain)
+	domainResult, err := u.service.CreateUserServices(domain)
 	if err != nil {
 		logger.Error(
 			"Error trying to call CreateUser service",
