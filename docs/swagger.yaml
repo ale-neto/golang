@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   request.UserLogin:
     properties:
@@ -93,8 +94,12 @@ definitions:
         example: error trying to process request
         type: string
     type: object
+host: localhost:8080
 info:
   contact: {}
+  description: API for crud operations on users
+  title: CRUD Golang
+  version: "1.0"
 paths:
   /login:
     post:
@@ -298,4 +303,6 @@ paths:
       summary: Update User
       tags:
       - Users
+schemes:
+- http
 swagger: "2.0"
