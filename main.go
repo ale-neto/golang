@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	_ "github.com/ale-neto/golang/docs"
 	"github.com/ale-neto/golang/src/configuration/database/mongodb"
 	"github.com/ale-neto/golang/src/configuration/logger"
 	"github.com/ale-neto/golang/src/controller/routes"
@@ -11,6 +12,12 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// @title CRUD Golang
+// @version 1.0
+// @description API for crud operations on users
+// @host localhost:8080
+// @BasePath /
+// @schemes http
 func main() {
 	logger.Info("About to start user application")
 

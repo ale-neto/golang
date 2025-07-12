@@ -10,9 +10,55 @@
         "version": "1.0"
     },
     "host": "localhost:8080",
-    "basePath": "/",
+    "basePath": "/api/v1",
     "paths": {
-        "/createUser": {
+        "/login": {
+            "post": {
+                "description": "Allows a user to log in and receive an authentication token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User Login",
+                "parameters": [
+                    {
+                        "description": "User login credentials",
+                        "name": "userLogin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UserLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login successful, authentication token provided",
+                        "schema": {
+                            "$ref": "#/definitions/response.UserResponse"
+                        },
+                        "headers": {
+                            "Authorization": {
+                                "type": "string",
+                                "description": "Authentication token"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Error: Invalid login credentials",
+                        "schema": {
+                            "$ref": "#/definitions/rest_err.RestErr"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/create": {
             "post": {
                 "description": "Create a new user with the provided user information",
                 "consumes": [
@@ -58,7 +104,7 @@
                 }
             }
         },
-        "/deleteUser/{userId}": {
+        "/user/delete/{id}": {
             "delete": {
                 "description": "Deletes a user based on the ID provided as a parameter.",
                 "consumes": [
@@ -75,7 +121,7 @@
                     {
                         "type": "string",
                         "description": "ID of the user to be deleted",
-                        "name": "userId",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     },
@@ -107,7 +153,7 @@
                 }
             }
         },
-        "/getUserByEmail/{userEmail}": {
+        "/user/email/{userEmail}": {
             "get": {
                 "description": "Retrieves user details based on the email provided as a parameter.",
                 "consumes": [
@@ -159,7 +205,7 @@
                 }
             }
         },
-        "/getUserById/{userId}": {
+        "/user/id/{id}": {
             "get": {
                 "description": "Retrieves user details based on the user ID provided as a parameter.",
                 "consumes": [
@@ -176,7 +222,7 @@
                     {
                         "type": "string",
                         "description": "ID of the user to be retrieved",
-                        "name": "userId",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     },
@@ -211,53 +257,7 @@
                 }
             }
         },
-        "/login": {
-            "post": {
-                "description": "Allows a user to log in and receive an authentication token.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "User Login",
-                "parameters": [
-                    {
-                        "description": "User login credentials",
-                        "name": "userLogin",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/request.UserLogin"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Login successful, authentication token provided",
-                        "schema": {
-                            "$ref": "#/definitions/response.UserResponse"
-                        },
-                        "headers": {
-                            "Authorization": {
-                                "type": "string",
-                                "description": "Authentication token"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Error: Invalid login credentials",
-                        "schema": {
-                            "$ref": "#/definitions/rest_err.RestErr"
-                        }
-                    }
-                }
-            }
-        },
-        "/updateUser/{userId}": {
+        "/user/update/{id}": {
             "put": {
                 "description": "Updates user details based on the ID provided as a parameter.",
                 "consumes": [
@@ -274,7 +274,7 @@
                     {
                         "type": "string",
                         "description": "ID of the user to be updated",
-                        "name": "userId",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     },
@@ -318,7 +318,6 @@
     },
     "definitions": {
         "request.UserLogin": {
-            "description": "Structure containing the necessary fields for user login.",
             "type": "object",
             "required": [
                 "email",
@@ -326,12 +325,10 @@
             ],
             "properties": {
                 "email": {
-                    "description": "User's email (required and must be a valid email address).",
                     "type": "string",
                     "example": "test@test.com"
                 },
                 "password": {
-                    "description": "User's password (required, minimum of 6 characters, and must contain at least one of the characters: !@#$%*).",
                     "type": "string",
                     "minLength": 6,
                     "example": "password#@#@!2121"
@@ -339,7 +336,6 @@
             }
         },
         "request.UserRequest": {
-            "description": "Structure containing the required fields for creating a new user.",
             "type": "object",
             "required": [
                 "age",
@@ -349,26 +345,22 @@
             ],
             "properties": {
                 "age": {
-                    "description": "User's age (required, must be between 1 and 140).\n@json\n@jsonTag age\n@jsonExample 30",
                     "type": "integer",
                     "maximum": 140,
                     "minimum": 1,
                     "example": 30
                 },
                 "email": {
-                    "description": "User's email (required and must be a valid email address).\nExample: user@example.com\n@json\n@jsonTag email\n@jsonExample user@example.com\n@binding required,email",
                     "type": "string",
                     "example": "test@test.com"
                 },
                 "name": {
-                    "description": "User's name (required, minimum of 4 characters, maximum of 100 characters).\nExample: John Doe\n@json\n@jsonTag name\n@jsonExample John Doe\n@binding required,min=4,max=100",
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 4,
                     "example": "John Doe"
                 },
                 "password": {
-                    "description": "User's password (required, minimum of 6 characters, and must contain at least one of the characters: !@#$%*).\n@json\n@jsonTag password\n@jsonExample P@ssw0rd!\n@binding required,min=6,containsany=!@#$%*",
                     "type": "string",
                     "minLength": 6,
                     "example": "password#@#@!2121"
@@ -383,14 +375,12 @@
             ],
             "properties": {
                 "age": {
-                    "description": "User's age (required, must be between 1 and 140).\n@json\n@jsonTag age\n@jsonExample 30\n@binding required,min=1,max=140",
                     "type": "integer",
                     "maximum": 140,
                     "minimum": 1,
                     "example": 30
                 },
                 "name": {
-                    "description": "User's name (required, minimum of 4 characters, maximum of 100 characters).\nExample: John Doe\n@json\n@jsonTag name\n@jsonExample John Doe\n@binding required,min=4,max=100",
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 4,
@@ -420,44 +410,36 @@
             }
         },
         "rest_err.Causes": {
-            "description": "Structure representing the causes of an error.",
             "type": "object",
             "properties": {
                 "field": {
-                    "description": "Field associated with the error cause.\n@json\n@jsonTag field",
                     "type": "string",
                     "example": "name"
                 },
                 "message": {
-                    "description": "Error message describing the cause.\n@json\n@jsonTag message",
                     "type": "string",
                     "example": "name is required"
                 }
             }
         },
         "rest_err.RestErr": {
-            "description": "Structure for describing why the error occurred",
             "type": "object",
             "properties": {
                 "causes": {
-                    "description": "Error causes.",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/rest_err.Causes"
                     }
                 },
                 "code": {
-                    "description": "Error code.",
                     "type": "integer",
                     "example": 500
                 },
                 "error": {
-                    "description": "Error description.",
                     "type": "string",
                     "example": "internal_server_error"
                 },
                 "message": {
-                    "description": "Error message.",
                     "type": "string",
                     "example": "error trying to process request"
                 }
